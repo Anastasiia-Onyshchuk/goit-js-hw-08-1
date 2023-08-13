@@ -22,11 +22,14 @@ refs.form.addEventListener('submit', (evt) => {
     evt.preventDefault();
     
     localStorage.removeItem(STORAGE_KEY);
-    evt.target.reset();
+    evt.currentTarget.reset();
+    formData.email = ''; 
+    formData.message = '';
 
     console.log(formData);
     
 });
+
 function populateFormOutput() {
     const savedMessage = JSON.parse(localStorage.getItem(STORAGE_KEY));
     if (savedMessage) {
