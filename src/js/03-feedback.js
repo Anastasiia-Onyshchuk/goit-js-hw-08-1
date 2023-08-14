@@ -15,18 +15,24 @@ refs.form.addEventListener('input', throttle(handlerFormOutput, 500))
 function handlerFormOutput(evt) {
     formData[evt.target.name] = evt.target.value;
     localStorage.setItem(STORAGE_KEY, JSON.stringify(formData))
-    console.log(formData);
+    // console.log(formData);
     }
 
 refs.form.addEventListener('submit', (evt) => {
     evt.preventDefault();
+        
+        const submittedData = {
+        email: formData.email || '',
+        message: formData.message || '',
+    };
+    console.log(submittedData);
     
     localStorage.removeItem(STORAGE_KEY);
     evt.currentTarget.reset();
     formData.email = ''; 
     formData.message = '';
 
-    console.log(formData);
+    // console.log(formData);
     
 });
 
