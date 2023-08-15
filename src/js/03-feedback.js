@@ -2,45 +2,41 @@ import throttle from "lodash.throttle";
 import '../css/common.css';
 import '../css/03-feedback.css';
 const STORAGE_KEY = 'feedback-form-state';
-// const PARSED_DATA = JSON.parse(STORAGE_KEY);
 const refs = {
     form: document.querySelector('.feedback-form'),
     input: document.querySelector('input'),
     textarea: document.querySelector('textarea'),
 }
-populateFormOutput();
-const formData = {};
+
+let formData = {};
+
+document.addEventListener('DOMContentLoaded', () => {
+    populateFormOutput();
+});
 
 refs.form.addEventListener('input', throttle(handlerFormOutput, 500))
 function handlerFormOutput(evt) {
     formData[evt.target.name] = evt.target.value;
     localStorage.setItem(STORAGE_KEY, JSON.stringify(formData))
-    // console.log(formData);
     }
 
-refs.form.addEventListener('submit', (evt) => {
+    function onSubmitForm(evt){
     evt.preventDefault();
-        
-        const submittedData = {
-        email: formData.email || '',
-        message: formData.message || '',
-    };
-    console.log(submittedData);
-    
+    if (refs.input.value === '' || refs.textarea.value === '') {
+        alert('ЗАПОВНІТЬ УСІ ПОЛЯ ФОРМИ');
+        return;
+    }
     localStorage.removeItem(STORAGE_KEY);
     evt.currentTarget.reset();
-    formData.email = ''; 
-    formData.message = '';
-
-    // console.log(formData);
-    
-});
-
-function populateFormOutput() {
-    const savedMessage = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    if (savedMessage) {
-        refs.input.value = savedMessage.email;  
-        refs.textarea.value = savedMessage.message;
+    formData = {};
     }
 
+refs.form.addEventListener('submit', onSubmitForm );
+function populateFormOutput() {
+    const savedFormData = localStorage.getItem(STORAGE_KEY);
+    if (savedFormData) {
+        formData = JSON.parse(savedFormData) || {};
+        refs.input.value = formData.email || '';
+        refs.textarea.value = formData.message || '';
+    }
 }
