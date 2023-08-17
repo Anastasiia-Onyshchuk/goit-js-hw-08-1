@@ -26,9 +26,14 @@ function handlerFormOutput(evt) {
         alert('ЗАПОВНІТЬ УСІ ПОЛЯ ФОРМИ');
         return;
     }
-    localStorage.removeItem(STORAGE_KEY);
+        localStorage.removeItem(STORAGE_KEY);
+         formData = {
+            email: refs.input.value,
+            message: refs.textarea.value,
+    };
+        console.log(formData);
     evt.currentTarget.reset();
-    formData = {};
+   
     }
 
 refs.form.addEventListener('submit', onSubmitForm );
